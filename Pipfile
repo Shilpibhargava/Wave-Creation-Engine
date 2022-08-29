@@ -11,6 +11,9 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
+dash = "*"
+pandas = "*"
+pyspark = "*"
 
 [requires]
 python_version = "3.8"
