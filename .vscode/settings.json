@@ -1,0 +1,10 @@
+{
+    "[python]": {
+        "editor.defaultFormatter": "ms-python.python",
+        "editor.rulers": [
+            80,
+            100
+        ]
+    },
+    "workbench.tree.indent": 16
+}
