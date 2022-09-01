@@ -23,7 +23,7 @@ ENV REQUESTS_CA_BUNDLE="/app/tgt-ca-bundle.crt"
 # the next step of installing the TAP Platform Connector.
 # This also bakes into the image the version of the TAP Connector
 # in use by our application in the event it is useful in the future.
-ENV TAP_RUNTIME_VERSION=v2.1.1
+ENV TAP_RUNTIME_VERSION=v2.4.2
 
 RUN apt-get update
 RUN apt-get install default-jdk -y
