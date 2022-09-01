@@ -1,0 +1,25 @@
+version: "1"
+
+steps:
+  - name: build and publish image to artifactory
+    image: docker.target.com/vela-plugins/kaniko:v0.7.0-1
+    ruleset:
+      branch:
+        - master
+      event:
+        - push
+    secrets:
+      - docker_username
+      - docker_password
+    parameters:
+      registry: docker.target.com
+      repo: docker.target.com/z003cnf/training-python-app-on-tap
+      tags:
+        - latest
+        - "b${BUILD_NUMBER}-${BUILD_COMMIT:0:8}"
+
+secrets:
+  - name: docker_username
+    key: ShilpiBhargava/Python-App-on-TAP-WE/artifactory_username
+  - name: docker_password
+    key: ShilpiBhargava/Python-App-on-TAP-WE/artifactory_password

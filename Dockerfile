@@ -1,6 +1,8 @@
 # Define the starting image for our application. This will contain
 # all of the base operating system components and dependencies needed
 # for Python 3.8. This will pull from our internal Docker Hub mirror.
+#ENV JAVA_HOME="foo"
+
 FROM hub.docker.target.com/python:3.8
 
 # Adds Pipfile and Pipefile.lock into the image in the /app folder.
@@ -21,6 +23,11 @@ ENV REQUESTS_CA_BUNDLE="/app/tgt-ca-bundle.crt"
 # In conjunction with copying the Pipfile & Pipefile.lock above
 # this will install the pipenv tool, and then install all of the
 # defined dependencies for this application as part of the image.
+
+RUN apt-get update
+RUN apt-get install default-jdk -y
+
+
 RUN pip install --upgrade pip pipenv && \
     pipenv install --deploy
 
