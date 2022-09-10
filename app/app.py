@@ -5,15 +5,17 @@ import io
 import dash
 import pandas as pd
 import numpy as np
-from dash import Dash, dcc, html, Input, Output , State, dash_table  # pip install dash (version 2.0.0 or higher)
+from dash import Dash, dcc, html, Input, Output, State, dash_table  # pip install dash (version 2.0.0 or higher)
 from pyspark.sql import SparkSession
-
-spark = SparkSession.builder.master("local[1]").appName("wave_tool").getOrCreate()
-from pyspark.sql.functions import col,row_number
+from pyspark.sql.functions import col, row_number
+from datetime import datetime as dt
 from pyspark.sql.types import StructType
 import pyspark.sql.functions as f
-df= pd.DataFrame()
 import pyspark.pandas as ps
+
+spark = SparkSession.builder.master("local[1]").appName("wave_tool").getOrCreate()
+
+df = pd.DataFrame()
 
 #external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -23,17 +25,12 @@ app.css.config.serve_locally = False
 
 app.css.append_css({"external_url": "./assets/xyz.css"})
 
-# for 3840
-d1=[[1,55,55,0],[2,8,508,500],[3,8,508,500],[4,8,508,500],[5,8,508,500],[6,8,508,500],[7,8,508,500],[8,8,428,420],[9,8,508,500],[10,8,508,500],[11,8,508,500],
-    [12,8,508,500],[13,10,390,380],[14,43,293,250]]
+d1=[[3840,1,54,54,0],[3840,2,8,862,854],[3840,3,8,880,872],[3840,4,8,862,854],[3840,5,8,878,870],[3840,6,8,864,856],[3840,7,8,920,912],
+    [3840,8,8,862,854],[3840,9,8,796,788],[3840,10,8,812,804],[3840,11,8,876,868],[3840,12,8,888,880],[3840,13,8,618,610],[3840,14,99,99,0],[3842,1,58,58,0],
+    [3842,2,8,500,492],[3842,3,8,509,501],[3842,4,8,500,492],[3842,5,8,509,501],[3842,6,8,500,492],[3842,7,8,509,501],[3842,8,8,446,438],[3842,9,8,500,492],
+    [3842,10,8,500,492],[3842,11,8,386,378],[3842,12,8,386,378],[3842,13,8,386,378],[3842,14,8,386,378],[3842,15,8,386,378],[3842,16,56,56,0]]
 
-# for 3842
-d2=[[1,58,58,0],[2,8,500,492],[3,8,509,501],[4,8,792,784],[5,8,792,784],[6,8,792,784],[7,8,792,784],[8,8,446,438],[9,8,792,784],[10,8,720,712],[11,8,792,784],
-    [12,8,792,784],[13,10,576,566],[14,43,528,485],[15,8,386,378],[16,56,56,0]]
-
-
-aisles=pd.DataFrame(d1,columns=['Aisle_No',	'Pallet Locations',	'Practically Usable Locations','C+B locations'])
-
+aisles=pd.DataFrame(d1, columns=['UDC', 'Aisle_No',	'Pallet Locations',	'Practically Usable Locations', 'C+B locations'])
 
 
 #file_name='BAS_20220720013522 7.22.2022 B.xlsx'
@@ -96,6 +93,17 @@ def parse_contents(contents, filename, date):
         html.Button("Download Waves", id="btn_csv"),
         dcc.Download(id="download-dataframe-csv"),
 
+        html.P("Select the UDC"),
+
+        dcc.Dropdown(id="slct_UDC",
+                     options=[{'label': x, 'value': x}
+                              for x in sorted(aisles['UDC'].unique())],
+                     multi=False,
+                     value='UDC',
+                     style={'width': "40%"}
+                     ),
+        html.Br(),
+
         html.P("Select a Store Stock Zone"),
 
         dcc.Dropdown(id="slct_SSZ",
@@ -129,6 +137,35 @@ def parse_contents(contents, filename, date):
                      ),
         html.Br(),
 
+        html.P("Select Date Range"),
+
+        # dcc.DatePickerRange(
+        #     id='date_pick',  # ID to be used for callback
+        #     calendar_orientation='horizontal',  # vertical or horizontal
+        #     day_size=35,  # size of calendar image. Default is 39
+        #     end_date_placeholder_text="Return",  # text that appears when no end date chosen
+        #     with_portal=False,  # if True calendar will open in a full screen overlay portal
+        #     first_day_of_week=0,  # Display of calendar when open (0 = Sunday)
+        #     reopen_calendar_on_clear=False,
+        #     is_RTL=False,  # True or False for direction of calendar
+        #     clearable=True,  # whether or not the user can clear the dropdown
+        #     number_of_months_shown=1,  # number of months shown when calendar is open
+        #     min_date_allowed=dt(2022, 1, 1),  # minimum date allowed on the DatePickerRange component
+        #     max_date_allowed=dt(2025, 6, 20),  # maximum date allowed on the DatePickerRange component
+        #     initial_visible_month=dt(2022, 11, 1),  # the month initially presented when the user opens the calendar
+        #     start_date=pd.to_datetime(data_raw['AllocationRequestDate'].unique()),
+        #     end_date=dt(2020, 5, 15).date(),
+        #     display_format='MMM Do, YY',  # how selected dates are displayed in the DatePickerRange component.
+        #     month_format='MMMM, YYYY',  # how calendar headers are displayed when the calendar is opened.
+        #     minimum_nights=1,  # minimum number of days between start and end date
+        #
+        #     persistence=True,
+        #     persisted_props=['start_date','end_date'],
+        #     persistence_type='session',  # session, local, or memory. Default is 'local'
+        #
+        #     #updatemode='singledate'  # singledate or bothdates. Determines when callback is triggered
+        # ),
+
         html.Button(id="submit-button", children="Create Waves"),
 
         html.Br(),
@@ -140,6 +177,8 @@ def parse_contents(contents, filename, date):
             page_size=5
         ),
         dcc.Store(id='stored-data', data=data_raw.to_dict('records')),
+
+        dcc.Store(id='output-data', data=[], storage_type='session'),
 
         html.Hr(),  # horizontal line
 
@@ -164,23 +203,20 @@ def update_output(list_of_contents, list_of_names, list_of_dates):
         return children
 
 @app.callback(Output('output-summary', 'children'),
+              Output('output-data','data'),
               Input('submit-button', 'n_clicks'),
               State('stored-data', 'data'),
+              State('slct_UDC', 'value'),
               State('slct_SSZ', 'value'),
               State('slct_Aisle', 'value'),
-              State('slct_fgt', 'value') )
+              State('slct_fgt', 'value'))
 
-def build_waves(n,data_raw,user_input_ssz,user_input_aisle,unit_sortable):
+def build_waves(n,data_raw,user_input_udc,user_input_ssz,user_input_aisle,unit_sortable):
         if n is None:
             return dash.no_update
         else :
-            print(type(data_raw))
-            ## convert list to pandas df
             data_raw1=pd.DataFrame(data_raw)
-            print(unit_sortable)
-            print(type(data_raw1))
             data_raw2=data_raw1.loc[(data_raw1['UnitSortable']==unit_sortable)]
-            print(type(data_raw2))
             df_wave_dpci_dims = spark.createDataFrame(data_raw2)
 
             ###---------------------------------------------- Calculations at Distro grain ---------------------------------------------------###
@@ -345,7 +381,7 @@ def build_waves(n,data_raw,user_input_ssz,user_input_aisle,unit_sortable):
                 distro_locs = data222
 
             ## wave size corresponding to cartons+bins locations
-            Wave_size_ctns = aisles.loc[aisles['Aisle_No'] == user_input_aisle, 'C+B locations'].tolist()[0]
+            Wave_size_ctns = 0.90*(aisles.loc[(aisles['Aisle_No'] == user_input_aisle) & (aisles['UDC'] == user_input_udc), 'C+B locations'].tolist()[0])
 
             ##filter out non-pallet distro's and specifc SSZ
             df1 = distro_locs.loc[(distro_locs['TotalNumberofPallets'] == 0) & (distro_locs['SSZ'] == user_input_ssz)]
@@ -362,8 +398,8 @@ def build_waves(n,data_raw,user_input_ssz,user_input_aisle,unit_sortable):
 
             #####------------------------------------------------ Pallet Locations Calc-----------------------------------------############
 
-            Wave_size_pallets = aisles.loc[aisles['Aisle_No'] == user_input_aisle, 'Pallet Locations'].tolist()[0]
-            pract_usable_locs = aisles.loc[aisles['Aisle_No'] == user_input_aisle, 'Practically Usable Locations'].tolist()[0]
+            Wave_size_pallets = aisles.loc[(aisles['Aisle_No'] == user_input_aisle) & (aisles['UDC'] == user_input_udc), 'Pallet Locations'].tolist()[0]
+            pract_usable_locs = aisles.loc[(aisles['Aisle_No'] == user_input_aisle) & (aisles['UDC'] == user_input_udc), 'Practically Usable Locations'].tolist()[0]
 
             pallet_distro = data_raw2.loc[(data_raw2['TotalNumberofPallets'] > 0) & (data_raw2['SSZ'] == user_input_ssz)]
 
@@ -441,18 +477,25 @@ def build_waves(n,data_raw,user_input_ssz,user_input_aisle,unit_sortable):
             data = summary.to_dict('rows')
             print(type(data))
             columns = [{"name": i, "id": i, } for i in (summary.columns)]
-            return dash_table.DataTable(data=data, columns=columns)
+            return dash_table.DataTable(data=data, columns=columns),df.to_dict('records')
 
             #return html.Div([ dash_table.DataTable(data=summary.to_dict('records'),columns=[{'name': i, 'id': i} for i in summary.columns],page_size=15)])
 
 
-@app.callback(Output("download-dataframe-csv", "data"),Input("btn_csv", "n_clicks"))
 
-def dwnld_data(n,df):
+
+@app.callback(Output("download-dataframe-csv", "data"),
+              Input("btn_csv", "n_clicks"),
+              Input('output-data', 'data'))
+
+
+def dwnld_data(n,data):
     if n is None:
         return dash.no_update
     else:
-        return dcc.send_data_frame(df.to_csv, "mydf.csv")
+        data1 = pd.DataFrame(data)
+        data1=data1.iloc[:, :-5]
+        return dcc.send_data_frame(data1.to_csv, "Distros-WaveID.csv")
 
 # ------------------------------------------------------------------------------
 if __name__ == '__main__':
