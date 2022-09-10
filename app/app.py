@@ -139,32 +139,18 @@ def parse_contents(contents, filename, date):
 
         html.P("Select Date Range"),
 
-        # dcc.DatePickerRange(
-        #     id='date_pick',  # ID to be used for callback
-        #     calendar_orientation='horizontal',  # vertical or horizontal
-        #     day_size=35,  # size of calendar image. Default is 39
-        #     end_date_placeholder_text="Return",  # text that appears when no end date chosen
-        #     with_portal=False,  # if True calendar will open in a full screen overlay portal
-        #     first_day_of_week=0,  # Display of calendar when open (0 = Sunday)
-        #     reopen_calendar_on_clear=False,
-        #     is_RTL=False,  # True or False for direction of calendar
-        #     clearable=True,  # whether or not the user can clear the dropdown
-        #     number_of_months_shown=1,  # number of months shown when calendar is open
-        #     min_date_allowed=dt(2022, 1, 1),  # minimum date allowed on the DatePickerRange component
-        #     max_date_allowed=dt(2025, 6, 20),  # maximum date allowed on the DatePickerRange component
-        #     initial_visible_month=dt(2022, 11, 1),  # the month initially presented when the user opens the calendar
-        #     start_date=pd.to_datetime(data_raw['AllocationRequestDate'].unique()),
-        #     end_date=dt(2020, 5, 15).date(),
-        #     display_format='MMM Do, YY',  # how selected dates are displayed in the DatePickerRange component.
-        #     month_format='MMMM, YYYY',  # how calendar headers are displayed when the calendar is opened.
-        #     minimum_nights=1,  # minimum number of days between start and end date
-        #
-        #     persistence=True,
-        #     persisted_props=['start_date','end_date'],
-        #     persistence_type='session',  # session, local, or memory. Default is 'local'
-        #
-        #     #updatemode='singledate'  # singledate or bothdates. Determines when callback is triggered
-        # ),
+        dcc.DatePickerRange(
+            id='date_pick',  # ID to be used for callback
+            calendar_orientation='horizontal',  # vertical or horizontal
+            day_size=30,  # size of calendar image. Default is 39
+            clearable=True,  # whether or not the user can clear the dropdown
+            number_of_months_shown=1,  # number of months shown when calendar is open
+            display_format='MMM Do, YY',  # how selected dates are displayed in the DatePickerRange component.
+            month_format='MMMM, YYYY'  # how calendar headers are displayed when the calendar is opened.
+            ),
+
+        html.Br(),
+        html.Hr(),
 
         html.Button(id="submit-button", children="Create Waves"),
 
@@ -205,18 +191,28 @@ def update_output(list_of_contents, list_of_names, list_of_dates):
 @app.callback(Output('output-summary', 'children'),
               Output('output-data','data'),
               Input('submit-button', 'n_clicks'),
+              Input('date_pick', 'start_date'),
+              Input('date_pick', 'end_date'),
               State('stored-data', 'data'),
               State('slct_UDC', 'value'),
               State('slct_SSZ', 'value'),
               State('slct_Aisle', 'value'),
               State('slct_fgt', 'value'))
 
-def build_waves(n,data_raw,user_input_udc,user_input_ssz,user_input_aisle,unit_sortable):
+def build_waves(n,start_date,end_date,data_raw,user_input_udc,user_input_ssz,user_input_aisle,unit_sortable):
         if n is None:
             return dash.no_update
         else :
             data_raw1=pd.DataFrame(data_raw)
             data_raw2=data_raw1.loc[(data_raw1['UnitSortable']==unit_sortable)]
+            print(start_date)
+            print(end_date)
+            data_raw2['AllocationRequestDate'] = pd.to_datetime(data_raw2['AllocationRequestDate'])
+            data_raw2=data_raw2.loc[(data_raw2['AllocationRequestDate'] >= start_date) & (data_raw2['AllocationRequestDate'] < end_date)]
+
+            if data_raw2.empty is True :
+                
+
             df_wave_dpci_dims = spark.createDataFrame(data_raw2)
 
             ###---------------------------------------------- Calculations at Distro grain ---------------------------------------------------###
