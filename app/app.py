@@ -210,9 +210,6 @@ def build_waves(n,start_date,end_date,data_raw,user_input_udc,user_input_ssz,use
             data_raw2['AllocationRequestDate'] = pd.to_datetime(data_raw2['AllocationRequestDate'])
             data_raw2=data_raw2.loc[(data_raw2['AllocationRequestDate'] >= start_date) & (data_raw2['AllocationRequestDate'] < end_date)]
 
-            if data_raw2.empty is True :
-                
-
             df_wave_dpci_dims = spark.createDataFrame(data_raw2)
 
             ###---------------------------------------------- Calculations at Distro grain ---------------------------------------------------###
