@@ -487,7 +487,8 @@ def dwnld_data(n,data):
     else:
         data1 = pd.DataFrame(data)
         data1=data1.iloc[:, :-5]
-        return dcc.send_data_frame(data1.to_csv, "Distros-WaveID.csv")
+        #print(type(data1))
+        return dcc.send_data_frame(data1.to_excel, "Distros-WaveID.xlsx", index=False)
 
 # ------------------------------------------------------------------------------
 if __name__ == '__main__':
