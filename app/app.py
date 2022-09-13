@@ -162,6 +162,19 @@ def parse_contents(contents, filename, date):
                      ),
 
         html.Br(),
+
+        html.P("To choose Level A or not (for 3842 only)"),
+
+        dcc.Dropdown(id="slct_levelA",
+                     options=[{'label': 'Yes', 'value': 'Yes'},
+                              {'label': 'No', 'value': 'No'}],
+                     multi=False,
+                     value='Yes',
+                     style={'width': "40%"}
+                     ),
+
+        html.Br(),
+
         html.Hr(),
 
         html.Button(id="submit-button", children="Create Waves"),
@@ -210,9 +223,10 @@ def update_output(list_of_contents, list_of_names, list_of_dates):
               State('slct_SSZ', 'value'),
               State('slct_Aisle', 'value'),
               State('slct_fgt', 'value'),
-              State('slct_method', 'value'))
+              State('slct_method', 'value'),
+              State('slct_levelA', 'value'))
 
-def build_waves(n,start_date,end_date,data_raw,user_input_udc,user_input_ssz,user_input_aisle,unit_sortable,method):
+def build_waves(n,start_date,end_date,data_raw,user_input_udc,user_input_ssz,user_input_aisle,unit_sortable,method,levelA):
         if n is None:
             return dash.no_update
         else :
@@ -386,8 +400,11 @@ def build_waves(n,start_date,end_date,data_raw,user_input_udc,user_input_ssz,use
                 distro_locs = data222
 
             ## wave size corresponding to cartons+bins locations
-            Wave_size_ctns = (aisles.loc[(aisles['Aisle_No'] == user_input_aisle) & (aisles['UDC'] == user_input_udc), 'C+B locations'].tolist()[0])
-            Wave_size_ctns = (aisles.loc[(aisles['Aisle_No'] == user_input_aisle) & (aisles['UDC'] == user_input_udc), 'C+B locations'].tolist()[0])
+
+            if levelA == 'Yes':
+                Wave_size_ctns = 0.9*((aisles.loc[(aisles['Aisle_No'] == user_input_aisle) & (aisles['UDC'] == user_input_udc), 'C+B locations'].tolist()[0])+200)
+            else:
+                Wave_size_ctns = 0.9*(aisles.loc[(aisles['Aisle_No'] == user_input_aisle) & (aisles['UDC'] == user_input_udc), 'C+B locations'].tolist()[0])
 
             ##filter out non-pallet distro's and specifc SSZ
             df1 = distro_locs.loc[(distro_locs['TotalNumberofPallets'] == 0) & (distro_locs['SSZ'] == user_input_ssz)]
@@ -405,7 +422,10 @@ def build_waves(n,start_date,end_date,data_raw,user_input_udc,user_input_ssz,use
             #####------------------------------------------------ Pallet Locations Calc-----------------------------------------############
 
             Wave_size_pallets = aisles.loc[(aisles['Aisle_No'] == user_input_aisle) & (aisles['UDC'] == user_input_udc), 'Pallet Locations'].tolist()[0]
-            pract_usable_locs = aisles.loc[(aisles['Aisle_No'] == user_input_aisle) & (aisles['UDC'] == user_input_udc), 'Practically Usable Locations'].tolist()[0]
+            if levelA == 'Yes':
+                pract_usable_locs = (aisles.loc[(aisles['Aisle_No'] == user_input_aisle) & (aisles['UDC'] == user_input_udc), 'Practically Usable Locations'].tolist()[0])+200
+            else:
+                pract_usable_locs = aisles.loc[(aisles['Aisle_No'] == user_input_aisle) & (aisles['UDC'] == user_input_udc), 'Practically Usable Locations'].tolist()[0]
 
             pallet_distro = data_raw2.loc[(data_raw2['TotalNumberofPallets'] > 0) & (data_raw2['SSZ'] == user_input_ssz)]
 
@@ -455,8 +475,7 @@ def build_waves(n,start_date,end_date,data_raw,user_input_udc,user_input_ssz,use
                     plts_rmng = plts_locs.sort_values(by=['Aisle'])
                     ## Allocate WaveID's
                     plts_rmng['wave_cum_locations'] = distro_locs['Total_locs'].cumsum()
-                    plts_rmng['wave_id'] = 'W_P' + np.ceil(
-                        distro_locs['wave_cum_locations'].div(Wave_size_ctns)).astype(int).astype(str)
+                    plts_rmng['wave_id'] = 'W_P' + np.ceil(distro_locs['wave_cum_locations'].div(Wave_size_ctns)).astype(int).astype(str)
 
             distro_locs = distro_locs.drop(['wave_no', 'wave_cum_locations'], axis=1)
             pallet_distro = pallet_distro.drop(['wave_no'], axis=1)
