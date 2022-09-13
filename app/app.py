@@ -150,6 +150,18 @@ def parse_contents(contents, filename, date):
             ),
 
         html.Br(),
+
+        html.P("Select method for wave size calculation"),
+
+        dcc.Dropdown(id="slct_method",
+                     options=[{'label': 'Distro', 'value': 'Distro'},
+                              {'label': 'DPCI', 'value': 'DPCI'}],
+                     multi=False,
+                     value='Distro',
+                     style={'width': "40%"}
+                     ),
+
+        html.Br(),
         html.Hr(),
 
         html.Button(id="submit-button", children="Create Waves"),
@@ -189,7 +201,7 @@ def update_output(list_of_contents, list_of_names, list_of_dates):
         return children
 
 @app.callback(Output('output-summary', 'children'),
-              Output('output-data','data'),
+              Output('output-data', 'data'),
               Input('submit-button', 'n_clicks'),
               Input('date_pick', 'start_date'),
               Input('date_pick', 'end_date'),
@@ -197,9 +209,10 @@ def update_output(list_of_contents, list_of_names, list_of_dates):
               State('slct_UDC', 'value'),
               State('slct_SSZ', 'value'),
               State('slct_Aisle', 'value'),
-              State('slct_fgt', 'value'))
+              State('slct_fgt', 'value'),
+              State('slct_method', 'value'))
 
-def build_waves(n,start_date,end_date,data_raw,user_input_udc,user_input_ssz,user_input_aisle,unit_sortable):
+def build_waves(n,start_date,end_date,data_raw,user_input_udc,user_input_ssz,user_input_aisle,unit_sortable,method):
         if n is None:
             return dash.no_update
         else :
@@ -367,13 +380,14 @@ def build_waves(n,start_date,end_date,data_raw,user_input_udc,user_input_ssz,use
 
             #### Make a choice of using the distro-grain v/s dpci-grain
 
-            if user_input_ssz == 2:
+            if method == 'DPCI':
                 distro_locs = data31
             else:
                 distro_locs = data222
 
             ## wave size corresponding to cartons+bins locations
-            Wave_size_ctns = 0.90*(aisles.loc[(aisles['Aisle_No'] == user_input_aisle) & (aisles['UDC'] == user_input_udc), 'C+B locations'].tolist()[0])
+            Wave_size_ctns = (aisles.loc[(aisles['Aisle_No'] == user_input_aisle) & (aisles['UDC'] == user_input_udc), 'C+B locations'].tolist()[0])
+            Wave_size_ctns = (aisles.loc[(aisles['Aisle_No'] == user_input_aisle) & (aisles['UDC'] == user_input_udc), 'C+B locations'].tolist()[0])
 
             ##filter out non-pallet distro's and specifc SSZ
             df1 = distro_locs.loc[(distro_locs['TotalNumberofPallets'] == 0) & (distro_locs['SSZ'] == user_input_ssz)]
