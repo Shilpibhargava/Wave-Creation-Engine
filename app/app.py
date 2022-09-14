@@ -413,6 +413,8 @@ def build_waves(n,start_date,end_date,data_raw,user_input_udc,user_input_ssz,use
             distro_locs = df1.sort_values(by=['Aisle'])
 
             ## Allocate WaveID's
+
+            distro_locs['Total_locs'] = distro_locs['Total_locs'].fillna(1)
             distro_locs['wave_cum_locations'] = distro_locs['Total_locs'].cumsum()
             distro_locs['wave_id'] = 'W' + np.ceil(distro_locs['wave_cum_locations'].div(Wave_size_ctns)).astype(int).astype(str)
             distro_locs['wave_no'] = np.ceil(distro_locs['wave_cum_locations'].div(Wave_size_ctns)).astype(int)
