@@ -169,7 +169,7 @@ def parse_contents(contents, filename, date):
                      options=[{'label': 'Yes', 'value': 'Yes'},
                               {'label': 'No', 'value': 'No'}],
                      multi=False,
-                     value='Yes',
+                     value='No',
                      style={'width': "40%"}
                      ),
 
@@ -401,8 +401,12 @@ def build_waves(n,start_date,end_date,data_raw,user_input_udc,user_input_ssz,use
 
             ## wave size corresponding to cartons+bins locations
 
-            if levelA == 'Yes':
-                Wave_size_ctns = 0.9*((aisles.loc[(aisles['Aisle_No'] == user_input_aisle) & (aisles['UDC'] == user_input_udc), 'C+B locations'].tolist()[0])+200)
+            if levelA == 'Yes' and user_input_aisle>=2 and user_input_aisle<=10:
+                Wave_size_ctns = 0.9*((aisles.loc[(aisles['Aisle_No'] == user_input_aisle) & (aisles['UDC'] == user_input_udc), 'C+B locations'].tolist()[0])+163)
+
+            elif levelA == 'Yes' and user_input_aisle>=11 and user_input_aisle<=14:
+                Wave_size_ctns = 0.9*((aisles.loc[(aisles['Aisle_No'] == user_input_aisle) & (aisles['UDC'] == user_input_udc), 'C+B locations'].tolist()[0])+127)
+
             else:
                 Wave_size_ctns = 0.9*(aisles.loc[(aisles['Aisle_No'] == user_input_aisle) & (aisles['UDC'] == user_input_udc), 'C+B locations'].tolist()[0])
 
@@ -424,8 +428,12 @@ def build_waves(n,start_date,end_date,data_raw,user_input_udc,user_input_ssz,use
             #####------------------------------------------------ Pallet Locations Calc-----------------------------------------############
 
             Wave_size_pallets = aisles.loc[(aisles['Aisle_No'] == user_input_aisle) & (aisles['UDC'] == user_input_udc), 'Pallet Locations'].tolist()[0]
-            if levelA == 'Yes':
-                pract_usable_locs = (aisles.loc[(aisles['Aisle_No'] == user_input_aisle) & (aisles['UDC'] == user_input_udc), 'Practically Usable Locations'].tolist()[0])+200
+            if levelA == 'Yes' and user_input_aisle>=2 and user_input_aisle<=10:
+                pract_usable_locs = (aisles.loc[(aisles['Aisle_No'] == user_input_aisle) & (aisles['UDC'] == user_input_udc), 'Practically Usable Locations'].tolist()[0])+163
+
+            elif levelA == 'Yes' and user_input_aisle >= 2 and user_input_aisle <= 10:
+                pract_usable_locs = (aisles.loc[(aisles['Aisle_No'] == user_input_aisle) & (aisles['UDC'] == user_input_udc), 'Practically Usable Locations'].tolist()[0]) +127
+
             else:
                 pract_usable_locs = aisles.loc[(aisles['Aisle_No'] == user_input_aisle) & (aisles['UDC'] == user_input_udc), 'Practically Usable Locations'].tolist()[0]
 
@@ -438,7 +446,7 @@ def build_waves(n,start_date,end_date,data_raw,user_input_udc,user_input_ssz,use
 
             # Sort all the dpci by total no. of VCP boxes, pallets with larger no. of boxes should be sent to pallet locations
             # rather than pallets with smaller quantity of boxes.
-            # in winters add a height ocnstraint too
+            # in winters add a height constraint too
 
             pallet_dpci.sort_values(by=['vcp', 'VCPHt'], ascending=False, inplace=True)
 
