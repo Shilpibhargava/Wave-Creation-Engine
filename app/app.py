@@ -481,24 +481,28 @@ def build_waves(n,start_date,end_date,data_raw,user_input_udc,user_input_ssz,use
                 else:
                     ## Assuming if there are lesser pallets then they can be charged to carton locations
                     plts_locs = pd.merge(plts_rmng, data222, how='inner')
+                    plts_locs = plts_locs.drop(['pallet_loc', 'wave_cum_locations', 'wave_id', 'wave_no'], axis=1)
                     ##Sort the data by asec wh_aisle, for clubbing nearby wharehosuing locations together in a wave.
                     plts_rmng = plts_locs.sort_values(by=['Aisle'])
                     ## Allocate WaveID's
-                    plts_rmng['wave_cum_locations'] = distro_locs['Total_locs'].cumsum()
-                    plts_rmng['wave_id'] = 'W_P' + np.ceil(distro_locs['wave_cum_locations'].div(Wave_size_ctns)).astype(int).astype(str)
+                    plts_rmng['wave_cum_locations'] = plts_rmng['Total_locs'].cumsum()
+                    plts_rmng['wave_id'] = 'W_P' + np.ceil(plts_rmng['wave_cum_locations'].div(Wave_size_ctns)).astype(int).astype(str)
 
             distro_locs = distro_locs.drop(['wave_no', 'wave_cum_locations'], axis=1)
             pallet_distro = pallet_distro.drop(['wave_no'], axis=1)
-            plts_rmng = plts_rmng.drop(['wave_no'], axis=1)
+            #plts_rmng = plts_rmng.drop(['wave_no'], axis=1)
 
             ### -------------------------------------------------------------------Concat and Summary---------------------------------------####
 
             df = pd.concat([distro_locs, pallet_distro, plts_rmng], ignore_index=True, sort=False)  # plts_rmng
 
-            summary = df.groupby(by=['wave_id']).agg(
+            summary = df.assign(plt_ssp=df['TotalNumberofFullVCPs'].where(df['TotalNumberofPallets'] > 0)).groupby(
+                by=['wave_id']).agg(
                 ssz=pd.NamedAgg(column="SSZ", aggfunc="mean"),
                 Total_plts=pd.NamedAgg(column="TotalNumberofPallets", aggfunc="sum"),
+                Total_plts_ssps=pd.NamedAgg(column="plt_ssp", aggfunc="sum"),
                 Total_vcp=pd.NamedAgg(column="TotalNumberofFullVCPs", aggfunc="sum"),
+                Total_loose_ssp=pd.NamedAgg(column="TotalNumberofLooseSSP", aggfunc="sum"),
                 Total_ssp=pd.NamedAgg(column="TotalNumberofSSPsintheDistro", aggfunc="sum"),
                 Total_distro=pd.NamedAgg(column="Distro", aggfunc="count"),
                 Total_dpci=pd.NamedAgg(column="DPCI", aggfunc="nunique"),
