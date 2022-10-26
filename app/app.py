@@ -25,24 +25,25 @@ app.css.config.serve_locally = False
 
 app.css.append_css({"external_url": "./assets/xyz.css"})
 
-d1=[[3840,1,54,54,0],[3840,2,8,862,854],[3840,3,8,880,872],[3840,4,8,862,854],[3840,5,8,878,870],[3840,6,8,864,856],[3840,7,8,920,912],
-    [3840,8,8,862,854],[3840,9,8,796,788],[3840,10,8,812,804],[3840,11,8,876,868],[3840,12,8,888,880],[3840,13,8,618,610],[3840,14,99,99,0],[3842,1,58,58,0],
-    [3842,2,8,500,492],[3842,3,8,509,501],[3842,4,8,500,492],[3842,5,8,509,501],[3842,6,8,500,492],[3842,7,8,509,501],[3842,8,8,446,438],[3842,9,8,500,492],
-    [3842,10,8,500,492],[3842,11,8,386,378],[3842,12,8,386,378],[3842,13,8,386,378],[3842,14,8,386,378],[3842,15,8,386,378],[3842,16,56,56,0],[3841,2,8,778,770],
-    [3841,3,8,778,770],[3841,4,8,778,770],[3841,5,8,778,770],[3841,6,8,778,770],[3841,7,8,778,770],[3841,8,8,778,770],[3841,9,8,778,770],[3841,10,8,778,770],
-    [3841,11,8,778,770],[3841,12,8,778,770],[3841,13,8,778,770],[3841,14,46,46,0]]
+d1 = [[3840, 1, 54, 54, 0], [3840, 2, 8, 862, 854], [3840, 3, 8, 880, 872], [3840, 4, 8, 862, 854],
+      [3840, 5, 8, 878, 870], [3840, 6, 8, 864, 856], [3840, 7, 8, 920, 912],
+      [3840, 8, 8, 862, 854], [3840, 9, 8, 796, 788], [3840, 10, 8, 812, 804], [3840, 11, 8, 876, 868],
+      [3840, 12, 8, 888, 880], [3840, 13, 8, 618, 610], [3840, 14, 99, 99, 0], [3842, 1, 58, 58, 0],
+      [3842, 2, 8, 500, 492], [3842, 3, 8, 509, 501], [3842, 4, 8, 500, 492], [3842, 5, 8, 509, 501],
+      [3842, 6, 8, 500, 492], [3842, 7, 8, 509, 501], [3842, 8, 8, 446, 438], [3842, 9, 8, 500, 492],
+      [3842, 10, 8, 500, 492], [3842, 11, 8, 386, 378], [3842, 12, 8, 386, 378], [3842, 13, 8, 386, 378],
+      [3842, 14, 8, 386, 378], [3842, 15, 8, 386, 378], [3842, 16, 56, 56, 0], [3841, 2, 8, 778, 770],
+      [3841, 3, 8, 778, 770], [3841, 4, 8, 778, 770], [3841, 5, 8, 778, 770], [3841, 6, 8, 778, 770],
+      [3841, 7, 8, 778, 770], [3841, 8, 8, 778, 770], [3841, 9, 8, 778, 770], [3841, 10, 8, 778, 770],
+      [3841, 11, 8, 778, 770], [3841, 12, 8, 778, 770], [3841, 13, 8, 778, 770], [3841, 14, 46, 46, 0]]
 
+aisles = pd.DataFrame(d1,columns=['UDC', 'Aisle_No', 'Pallet Locations', 'Practically Usable Locations', 'C+B locations'])
 
-
-
-aisles=pd.DataFrame(d1, columns=['UDC', 'Aisle_No',	'Pallet Locations',	'Practically Usable Locations', 'C+B locations'])
-
-
-#file_name='BAS_20220720013522 7.22.2022 B.xlsx'
-#data_raw=pd.read_excel('/Users/Z003CNF/Library/CloudStorage/OneDrive-TargetCorporation/UDC_PTS/'+file_name,sheet_name= 'DistroData' , header =5, converters={'Distro':str,'DPCI':str})
-#data_raw.columns=data_raw.columns.str.replace(' ', '').str.replace('\n','')
-#aisles=pd.read_excel('/Users/Z003CNF/Library/CloudStorage/OneDrive-TargetCorporation/UDC_PTS/'+file_name,sheet_name= 'Aisles')
-#print(aisles)
+# file_name='BAS_20220720013522 7.22.2022 B.xlsx'
+# data_raw=pd.read_excel('/Users/Z003CNF/Library/CloudStorage/OneDrive-TargetCorporation/UDC_PTS/'+file_name,sheet_name= 'DistroData' , header =5, converters={'Distro':str,'DPCI':str})
+# data_raw.columns=data_raw.columns.str.replace(' ', '').str.replace('\n','')
+# aisles=pd.read_excel('/Users/Z003CNF/Library/CloudStorage/OneDrive-TargetCorporation/UDC_PTS/'+file_name,sheet_name= 'Aisles')
+# print(aisles)
 
 # ------------------------------------------------------------------------------
 # App layout
@@ -51,25 +52,26 @@ app.layout = html.Div([
     html.H1("Wave Creation Engine", style={'text-align': 'center'}),
 
     dcc.Upload(id='upload-data',
-        children=html.Div([
-            'Upload the drop file by clicking here',
-            #html.A('Select Files')
-        ]),
-        style={
-            'width': '100%',
-            'height': '60px',
-            'lineHeight': '60px',
-            'borderWidth': '1px',
-            'borderStyle': 'dashed',
-            'borderRadius': '5px',
-            'textAlign': 'center',
-            'margin': '10px'
-        },
-        # Allow multiple files to be uploaded
-        multiple=True),
+               children=html.Div([
+                   'Upload the drop file by clicking here',
+                   # html.A('Select Files')
+               ]),
+               style={
+                   'width': '100%',
+                   'height': '60px',
+                   'lineHeight': '60px',
+                   'borderWidth': '1px',
+                   'borderStyle': 'dashed',
+                   'borderRadius': '5px',
+                   'textAlign': 'center',
+                   'margin': '10px'
+               },
+               # Allow multiple files to be uploaded
+               multiple=True),
     html.Div(id='output-summary'),
     html.Div(id='output-datatable'),
 ])
+
 
 def parse_contents(contents, filename, date):
     content_type, content_string = contents.split(',')
@@ -81,9 +83,10 @@ def parse_contents(contents, filename, date):
                 io.StringIO(decoded.decode('utf-8')))
         elif 'xls' in filename:
             # Assume that the user uploaded an excel file
-            data_raw = pd.read_excel(io.BytesIO(decoded),sheet_name= 'DistroData' , header =5, converters={'Distro':str,'DPCI':str})
+            data_raw = pd.read_excel(io.BytesIO(decoded), sheet_name='DistroData', header=5,
+                                     converters={'Distro': str, 'DPCI': str})
             data_raw.columns = data_raw.columns.str.replace(' ', '').str.replace('\n', '')
-            #aisles = pd.read_excel(io.BytesIO(decoded),sheet_name='Aisles')
+            # aisles = pd.read_excel(io.BytesIO(decoded),sheet_name='Aisles')
 
     except Exception as e:
         print(e)
@@ -123,38 +126,38 @@ def parse_contents(contents, filename, date):
         html.P("Select a Aisle for wave size"),
 
         dcc.Dropdown(id="slct_Aisle",
-                     options=[{'label':x, 'value':x}
-                                for x in sorted(aisles['Aisle_No'].unique())],
+                     options=[{'label': x, 'value': x}
+                              for x in sorted(aisles['Aisle_No'].unique())],
                      multi=False,
                      value='Aisle',
                      style={'width': "40%"}
-                    ),
+                     ),
         html.Br(),
 
         html.P("Is Unit-Sortable Y/N ?"),
 
         dcc.Dropdown(id="slct_fgt",
-                     options=[{'label':x, 'value':x}
-                                for x in sorted(data_raw['UnitSortable'].unique())],
+                     options=[{'label': x, 'value': x}
+                              for x in sorted(data_raw['UnitSortable'].unique())],
                      multi=False,
                      value='Unit-Sortable',
                      style={'width': "40%"}
                      ),
         html.Br(),
 
-        html.P("Select Date Range"),
-
-        dcc.DatePickerRange(
-            id='date_pick',  # ID to be used for callback
-            calendar_orientation='horizontal',  # vertical or horizontal
-            day_size=30,  # size of calendar image. Default is 39
-            clearable=True,  # whether or not the user can clear the dropdown
-            number_of_months_shown=1,  # number of months shown when calendar is open
-            display_format='MMM Do, YY',  # how selected dates are displayed in the DatePickerRange component.
-            month_format='MMMM, YYYY'  # how calendar headers are displayed when the calendar is opened.
-            ),
-
-        html.Br(),
+        # html.P("Select Date Range"),
+        #
+        # dcc.DatePickerRange(
+        #     id='date_pick',  # ID to be used for callback
+        #     calendar_orientation='horizontal',  # vertical or horizontal
+        #     day_size=30,  # size of calendar image. Default is 39
+        #     clearable=True,  # whether or not the user can clear the dropdown
+        #     number_of_months_shown=1,  # number of months shown when calendar is open
+        #     display_format='MMM Do, YY',  # how selected dates are displayed in the DatePickerRange component.
+        #     month_format='MMMM, YYYY'  # how calendar headers are displayed when the calendar is opened.
+        # ),
+        #
+        # html.Br(),
 
         html.P("Select method for wave size calculation"),
 
@@ -163,6 +166,19 @@ def parse_contents(contents, filename, date):
                               {'label': 'DPCI', 'value': 'DPCI'}],
                      multi=False,
                      value='Distro',
+                     style={'width': "40%"}
+                     ),
+
+        html.Br(),
+
+        html.P("Cap Aisle Utilization at:"),
+
+        dcc.Dropdown(id="slct_cap",
+                     options=[{'label': '80 percent', 'value': 0.8},
+                              {'label': '90 percent', 'value': 0.9},
+                              {'label': '100 percent', 'value': 1}],
+                     multi=False,
+                     value=0.9,
                      style={'width': "40%"}
                      ),
 
@@ -199,18 +215,18 @@ def parse_contents(contents, filename, date):
         html.Hr(),  # horizontal line
 
         # For debugging, display the raw contents provided by the web browser
-        #html.Div('Raw Content'),
-        #html.Pre(contents[0:200] + '...', style={
-           # 'whiteSpace': 'pre-wrap',
-           # 'wordBreak': 'break-all'
-        #})
+        # html.Div('Raw Content'),
+        # html.Pre(contents[0:200] + '...', style={
+        # 'whiteSpace': 'pre-wrap',
+        # 'wordBreak': 'break-all'
+        # })
     ])
+
 
 @app.callback(Output('output-datatable', 'children'),
               Input('upload-data', 'contents'),
               State('upload-data', 'filename'),
               State('upload-data', 'last_modified'))
-
 def update_output(list_of_contents, list_of_names, list_of_dates):
     if list_of_contents is not None:
         children = [
@@ -218,333 +234,365 @@ def update_output(list_of_contents, list_of_names, list_of_dates):
             zip(list_of_contents, list_of_names, list_of_dates)]
         return children
 
+
 @app.callback(Output('output-summary', 'children'),
               Output('output-data', 'data'),
               Input('submit-button', 'n_clicks'),
-              Input('date_pick', 'start_date'),
-              Input('date_pick', 'end_date'),
+              #Input('date_pick', 'start_date'),
+              #Input('date_pick', 'end_date'),
               State('stored-data', 'data'),
               State('slct_UDC', 'value'),
               State('slct_SSZ', 'value'),
               State('slct_Aisle', 'value'),
               State('slct_fgt', 'value'),
               State('slct_method', 'value'),
+              State('slct_cap', 'value'),
               State('slct_levelA', 'value'))
+def build_waves(n, data_raw, user_input_udc, user_input_ssz, user_input_aisle, unit_sortable, method, cap, levelA):
+    if n is None:
+        return dash.no_update
+    else:
+        data_raw1 = pd.DataFrame(data_raw)
+        data_raw2 = data_raw1.loc[(data_raw1['UnitSortable'] == unit_sortable)]
+        data_raw2['AllocationRequestDate'] = pd.to_datetime(data_raw2['AllocationRequestDate'])
+        #data_raw2 = data_raw2.loc[(data_raw2['AllocationRequestDate'] >= start_date) & (data_raw2['AllocationRequestDate'] <= end_date)]
+        df_wave_dpci_dims = spark.createDataFrame(data_raw2)
 
-def build_waves(n,start_date,end_date,data_raw,user_input_udc,user_input_ssz,user_input_aisle,unit_sortable,method,levelA):
-        if n is None:
-            return dash.no_update
-        else :
-            data_raw1=pd.DataFrame(data_raw)
-            data_raw2=data_raw1.loc[(data_raw1['UnitSortable']==unit_sortable)]
-            print(start_date)
-            print(end_date)
-            data_raw2['AllocationRequestDate'] = pd.to_datetime(data_raw2['AllocationRequestDate'])
-            data_raw2=data_raw2.loc[(data_raw2['AllocationRequestDate'] >= start_date) & (data_raw2['AllocationRequestDate'] <= end_date)]
-            df_wave_dpci_dims = spark.createDataFrame(data_raw2)
+        ###---------------------------------------------- Calculations at Distro grain ---------------------------------------------------###
 
-            ###---------------------------------------------- Calculations at Distro grain ---------------------------------------------------###
+        # Data prep at distro - grain for loc - calcs
+        df_wave_dpci_dims1 = df_wave_dpci_dims.select('Distro', 'DPCI', 'SSZ',
+                                                      col('TotalNumberofFullVCPs').alias('vcp'),
+                                                      col('TotalNumberofLooseSSP').alias('ssp'),
+                                                      col('TotalNumberofPallets').alias('pallet'),
+                                                      col('SSPsinVCP').alias('ssp_q'),
+                                                      'VCPHeight', 'VCPWidth', 'VCPLength',
+                                                      col('Aisle').alias('wh_aisle'))
 
-            # Data prep at distro - grain for loc - calcs
-            df_wave_dpci_dims1 = df_wave_dpci_dims.select('Distro', 'DPCI', 'SSZ',
-                                                          col('TotalNumberofFullVCPs').alias('vcp'),
-                                                          col('TotalNumberofLooseSSP').alias('ssp'),
-                                                          col('TotalNumberofPallets').alias('pallet'),
-                                                          col('SSPsinVCP').alias('ssp_q'),
-                                                          'VCPHeight', 'VCPWidth', 'VCPLength',
-                                                          col('Aisle').alias('wh_aisle'))
+        data = df_wave_dpci_dims1.withColumn("RatioSSPsinBox", col('ssp') / col('ssp_q'))
+        data1 = data.select(data['*'], f.sort_array(f.array('VCPHeight', 'VCPWidth', 'VCPLength')).alias("arr"))
+        data2 = data1.select(data1['*'], data1.arr[0].alias('Ht'), data1.arr[1].alias('Wt'),
+                             data1.arr[2].alias('Lt')).drop('VCPHeight', 'VCPWidth', 'VCPLength', 'arr')
 
-            data = df_wave_dpci_dims1.withColumn("RatioSSPsinBox", col('ssp') / col('ssp_q'))
-            data1 = data.select(data['*'], f.sort_array(f.array('VCPHeight', 'VCPWidth', 'VCPLength')).alias("arr"))
-            data2 = data1.select(data1['*'], data1.arr[0].alias('Ht'), data1.arr[1].alias('Wt'),
-                                 data1.arr[2].alias('Lt')).drop('VCPHeight', 'VCPWidth', 'VCPLength', 'arr')
+        # Location's estimation for VCP boxes - basic assumption boxes are charged one behind another on longer side (length)
+        # Location dimensions (15.5 X 92.5 X 15)
 
-            # Location's estimation for VCP boxes - basic assumption boxes are charged one behind another on longer side (length)
-            # Location dimensions (15.5 X 92.5 X 15)
+        # One VCP box takes how many locations width wise ## f.lit(1) ## for historical validations
+        data2 = data2.withColumn("Loc_wt", f.ceil(
+            col('Wt') / 15.5))  # 15.5/col('Wt')# for future 15.5/shorter side of box (width) # long==length, # shorter==width # shortest==height
 
-            # One VCP box takes how many locations width wise ## f.lit(1) ## for historical validations
-            data2 = data2.withColumn("Loc_wt", f.ceil(
-                col('Wt') / 15.5))  # 15.5/col('Wt')# for future 15.5/shorter side of box (width) # long==length, # shorter==width # shortest==height
+        # How many VCP can be Put one behind another on length
+        data2 = data2.withColumn("Loc_lt", f.floor((92.5 / col('Lt'))))
 
-            # How many VCP can be Put one behind another on length
-            data2 = data2.withColumn("Loc_lt", f.floor((92.5 / col('Lt'))))
+        # How many VCP Can be stacked one on top? 1st stack (first stack can be just 2 high)
+        data2 = data2.withColumn("Loc_ht1", f.when(col('Ht') <= 5, 2).otherwise(0))
 
-            # How many VCP Can be stacked one on top? 1st stack (first stack can be just 2 high)
-            data2 = data2.withColumn("Loc_ht1", f.when(col('Ht') <= 5, 2).otherwise(0))
+        # Subsequesnt Stacks (2nd stack onwards can be 3 or more depending on height of box) # flaps tolerance still missing
+        # 5 inch is benchmark to stack # levels a,b,c,d categorization also not there
+        data2 = data2.withColumn("Loc_ht2", f.when(col('Ht') <= 5, f.ceil((10 / col('Ht')))).otherwise(0))
+        ## >15 inch, push to level C... () ## instead of 15 make it 10
 
-            # Subsequesnt Stacks (2nd stack onwards can be 3 or more depending on height of box) # flaps tolerance still missing # 5 inch is benchmark to stack # levels a,b,c,d categorization also not there
-            data2 = data2.withColumn("Loc_ht2", f.when(col('Ht') <= 5, f.ceil((15 / col('Ht')))).otherwise(0))
+        # Total VCP boxes that can fit in 'Loc_lt' location (Level B, C)
+        data2 = data2.withColumn("Loc_tot", f.when(col('Loc_ht1') > 0, col('Loc_ht1') + (col('Loc_lt') - 1) * col('Loc_ht2')).otherwise(col('Loc_lt')))
 
-            # Total VCP boxes that can fit in 'Loc_lt' location (Level B, C)
-            data2 = data2.withColumn("Loc_tot", f.when(col('Loc_ht1') > 0,
-                                                       col('Loc_ht1') + (col('Loc_lt') - 1) * col('Loc_ht2')).otherwise(
-                col('Loc_lt')))
+        # Can all vcp's in this distro be fit in AG's locations ? (this is actually space remaining and these many more boxes could have come)
+        data2 = data2.withColumn("Loc_vcp_rmng",
+                                 col('Loc_tot') - col('vcp') - f.when(col('RatioSSPsinBox') > 0.5, 1).otherwise(0))
 
-            # Can all vcp's in this distro be fit in AG's locations ? (this is actually space remaining and these many more boxes could have come)
-            data2 = data2.withColumn("Loc_vcp_rmng",
-                                     col('Loc_tot') - col('vcp') - f.when(col('RatioSSPsinBox') > 0.5, 1).otherwise(0))
+        # If Loc_vcp_rmng is negative ,then extra locations are needed for those remaining vcp's other wise zero additional location, ##default 1 location width wise--col('Loc_wt')
+        data2 = data2.withColumn("Loc_extra", f.when(col('Loc_vcp_rmng') <= 0, col('Loc_wt') * f.ceil(
+            f.abs(col('Loc_vcp_rmng') / col('Loc_tot')))).otherwise(0) + col('Loc_wt'))
 
-            # If Loc_vcp_rmng is negative ,then extra locations are needed for those remaining vcp's other wise zero additional location, ##default 1 location width wise--col('Loc_wt')
-            data2 = data2.withColumn("Loc_extra", f.when(col('Loc_vcp_rmng') <= 0, col('Loc_wt') * f.ceil(
-                f.abs(col('Loc_vcp_rmng') / col('Loc_tot')))).otherwise(0) + col('Loc_wt'))
+        # is there Space Remaining for tray to fit ?
+        data2 = data2.withColumn("Loc_tray", f.when((((col('Loc_extra') * col('Loc_tot')) - col('vcp') - f.when(
+            col('RatioSSPsinBox') > 0.5, 1).otherwise(0)) * col('Lt')) > 7.7, 1).otherwise(0))
 
-            # is there Space Remaining for tray to fit ?
-            data2 = data2.withColumn("Loc_tray", f.when((((col('Loc_extra') * col('Loc_tot')) - col('vcp') - f.when(
-                col('RatioSSPsinBox') > 0.5, 1).otherwise(0)) * col('Lt')) > 7.7, 1).otherwise(0))
+        # If No space to Keep Tray then one additional location needed
+        data2 = data2.withColumn("Loc_extra_tray", f.when(col('Loc_tray') == 0, 1).otherwise(0))
 
-            # If No space to Keep Tray then one additional location needed
-            data2 = data2.withColumn("Loc_extra_tray", f.when(col('Loc_tray') == 0, 1).otherwise(0))
+        # JUST LOOSE SSP's FLAG
+        data2 = data2.withColumn("Loose_ssp_flag", f.when((col('vcp') == 0) & (col('ssp') > 0), 1).otherwise(0))
 
-            # JUST LOOSE SSP's FLAG
-            data2 = data2.withColumn("Loose_ssp_flag", f.when((col('vcp') == 0) & (col('ssp') > 0), 1).otherwise(0))
+        # Total Locations
+        data2 = data2.withColumn("Total_locs", f.when(col('Loose_ssp_flag') == 0,
+                                                      col('Loc_extra') + col('Loc_extra_tray')).otherwise(
+            f.when(col('RatioSSPsinBox') > 0, 1).otherwise(0)))
+        data211 = data2.select('Distro', 'SSZ', 'DPCI', 'Total_locs').toPandas()
 
-            # Total Locations
-            data2 = data2.withColumn("Total_locs", f.when(col('Loose_ssp_flag') == 0,
-                                                          col('Loc_extra') + col('Loc_extra_tray')).otherwise(f.when(col('RatioSSPsinBox') > 0, 1).otherwise(0)))
-            data211 = data2.select('Distro', 'SSZ', 'DPCI', 'Total_locs').toPandas()
+        data222 = pd.merge(data_raw2, data211, how='left')
 
-            data222 = pd.merge(data_raw2, data211, how='left')
+        ###---------------------------------------------------------- Calculations at DPCI grain--------------------------------------####
 
-            ###---------------------------------------------------------- Calculations at DPCI grain--------------------------------------####
+        #### Data prep at dpci grain for loc-calcs
 
-            #### Data prep at dpci grain for loc-calcs
+        # filter non-pallet distro's
+        df_wave_dpci_dims1 = df_wave_dpci_dims1.filter(df_wave_dpci_dims1.pallet == 0)
 
-            # filter non-pallet distro's
-            df_wave_dpci_dims1 = df_wave_dpci_dims1.filter(df_wave_dpci_dims1.pallet == 0)
+        data_dpci_raw = df_wave_dpci_dims1.groupBy('SSZ', 'DPCI').agg(f.sum('vcp').alias('vcp1'),
+                                                                      f.sum('ssp').alias('ssp'),
+                                                                      f.sum('pallet').alias('pallet'),
+                                                                      f.max('ssp_q').alias('ssp_q'),
+                                                                      f.max('VCPHeight').alias('vend_cspk_ht_q'),
+                                                                      f.max('VCPWidth').alias('vend_cspk_wth_q'),
+                                                                      f.max('VCPLength').alias('vend_cspk_lgth_q'))
 
-            data_dpci_raw = df_wave_dpci_dims1.groupBy('SSZ', 'DPCI').agg(f.sum('vcp').alias('vcp1'),
-                                                                          f.sum('ssp').alias('ssp'),
-                                                                          f.sum('pallet').alias('pallet'),
-                                                                          f.max('ssp_q').alias('ssp_q'),
-                                                                          f.max('VCPHeight').alias('vend_cspk_ht_q'),
-                                                                          f.max('VCPWidth').alias('vend_cspk_wth_q'),
-                                                                          f.max('VCPLength').alias('vend_cspk_lgth_q'))
+        data = data_dpci_raw
+        data = data.withColumn("RatioSSPsinBox1", col('ssp') / col('ssp_q'))
+        data = data.withColumn("vcp", col('vcp1') + f.floor(col('RatioSSPsinBox1')))
+        data = data.withColumn("RatioSSPsinBox", col('RatioSSPsinBox1') - f.floor(col('RatioSSPsinBox1')))
 
-            data = data_dpci_raw
-            data = data.withColumn("RatioSSPsinBox1", col('ssp') / col('ssp_q'))
-            data = data.withColumn("vcp", col('vcp1') + f.floor(col('RatioSSPsinBox1')))
-            data = data.withColumn("RatioSSPsinBox", col('RatioSSPsinBox1') - f.floor(col('RatioSSPsinBox1')))
+        data11 = data.select(data['*'], f.sort_array(f.array('vend_cspk_ht_q', 'vend_cspk_wth_q', 'vend_cspk_lgth_q')).alias("arr"))
+        data21 = data11.select(data11['*'], data11.arr[0].alias('Ht'), data11.arr[1].alias('Wt'),
+                               data11.arr[2].alias('Lt')).drop('vend_cspk_ht_q', 'vend_cspk_wth_q',
+                                                               'vend_cspk_lgth_q', 'arr', 'vcp1', 'RatioSSPsinBox1')
 
-            data11 = data.select(data['*'],
-                                 f.sort_array(f.array('vend_cspk_ht_q', 'vend_cspk_wth_q', 'vend_cspk_lgth_q')).alias(
-                                     "arr"))
-            data21 = data11.select(data11['*'], data11.arr[0].alias('Ht'), data11.arr[1].alias('Wt'),
-                                   data11.arr[2].alias('Lt')).drop('vend_cspk_ht_q', 'vend_cspk_wth_q',
-                                                                   'vend_cspk_lgth_q', 'arr', 'vcp1', 'RatioSSPsinBox1')
+        # Location's estimation for VCP boxes basic assumption boxes are charged one behind another on longer side (length)
+        # Location dimensions (15.5 X 92.5 X 15)
 
-            # Location's estimation for VCP boxes basic assumption boxes are charged one behind another on longer side (length)
-            # Location dimensions (15.5 X 92.5 X 15)
+        # One VCP box takes how many locations width wise
+        data21 = data21.withColumn("Loc_wt", f.ceil(
+            col('Wt') / 15.5))  # 15.5/col('Wt')# for future 15.5/shorter side of box (width) # long==length, # shorter==width # shortest==height
 
-            # One VCP box takes how many locations width wise
-            data21 = data21.withColumn("Loc_wt", f.ceil(
-                col('Wt') / 15.5))  # 15.5/col('Wt')# for future 15.5/shorter side of box (width) # long==length, # shorter==width # shortest==height
+        # How many VCP can be Put one behind another on length
+        data21 = data21.withColumn("Loc_lt", f.floor((92.5 / col('Lt'))))
 
-            # How many VCP can be Put one behind another on length
-            data21 = data21.withColumn("Loc_lt", f.floor((92.5 / col('Lt'))))
+        # How many VCP Can be stacked one on top? 1st stack (first stack can be just 2 high)
+        data21 = data21.withColumn("Loc_ht1", f.when(col('Ht') <= 5, 2).otherwise(0))
 
-            # How many VCP Can be stacked one on top? 1st stack (first stack can be just 2 high)
-            data21 = data21.withColumn("Loc_ht1", f.when(col('Ht') <= 5, 2).otherwise(0))
+        # Subsequesnt Stacks (2nd stack onwards can be 3 or more depending on height of box) # flaps tolerance still missing # 5 inch is benchmark to stack # levels a,b,c,d categorization also not there
+        data21 = data21.withColumn("Loc_ht2", f.when(col('Ht') <= 5, f.ceil((10 / col('Ht')))).otherwise(0))
 
-            # Subsequesnt Stacks (2nd stack onwards can be 3 or more depending on height of box) # flaps tolerance still missing # 5 inch is benchmark to stack # levels a,b,c,d categorization also not there
-            data21 = data21.withColumn("Loc_ht2", f.when(col('Ht') <= 5, f.ceil((15 / col('Ht')))).otherwise(0))
+        # Total VCP boxes that can fit in 'Loc_lt' location (Level B, C)
+        data21 = data21.withColumn("Loc_tot", f.when(col('Loc_ht1') > 0, col('Loc_ht1') + (col('Loc_lt') - 1) * col(
+            'Loc_ht2')).otherwise(col('Loc_lt')))
 
-            # Total VCP boxes that can fit in 'Loc_lt' location (Level B, C)
-            data21 = data21.withColumn("Loc_tot", f.when(col('Loc_ht1') > 0, col('Loc_ht1') + (col('Loc_lt') - 1) * col(
-                'Loc_ht2')).otherwise(col('Loc_lt')))
+        # Can all vcp's in this distro be fit in AG's locations ? (this is actually space remaining and these many more boxes could have come)
+        data21 = data21.withColumn("Loc_vcp_rmng",
+                                   col('Loc_tot') - col('vcp') - f.when(col('RatioSSPsinBox') > 0.5, 1).otherwise(
+                                       0))
 
-            # Can all vcp's in this distro be fit in AG's locations ? (this is actually space remaining and these many more boxes could have come)
-            data21 = data21.withColumn("Loc_vcp_rmng",
-                                       col('Loc_tot') - col('vcp') - f.when(col('RatioSSPsinBox') > 0.5, 1).otherwise(
-                                           0))
+        # If Loc_vcp_rmng is negative ,then extra locations are needed for those remaining vcp's other wise zero additional location, ##default 1 location width wise--col('Loc_wt')
+        data21 = data21.withColumn("Loc_extra", f.when(col('Loc_vcp_rmng') <= 0, col('Loc_wt') * f.ceil(
+            f.abs(col('Loc_vcp_rmng') / col('Loc_tot')))).otherwise(0) + col('Loc_wt'))
 
-            # If Loc_vcp_rmng is negative ,then extra locations are needed for those remaining vcp's other wise zero additional location, ##default 1 location width wise--col('Loc_wt')
-            data21 = data21.withColumn("Loc_extra", f.when(col('Loc_vcp_rmng') <= 0, col('Loc_wt') * f.ceil(
-                f.abs(col('Loc_vcp_rmng') / col('Loc_tot')))).otherwise(0) + col('Loc_wt'))
+        # is there Space Remaining for tray to fit ?
+        data21 = data21.withColumn("Loc_tray", f.when((((col('Loc_extra') * col('Loc_tot')) - col('vcp') - f.when(
+            col('RatioSSPsinBox') > 0.5, 1).otherwise(0)) * col('Lt')) > 7.7, 1).otherwise(0))
 
-            # is there Space Remaining for tray to fit ?
-            data21 = data21.withColumn("Loc_tray", f.when((((col('Loc_extra') * col('Loc_tot')) - col('vcp') - f.when(
-                col('RatioSSPsinBox') > 0.5, 1).otherwise(0)) * col('Lt')) > 7.7, 1).otherwise(0))
+        # If No space to Keep Tray then one additional location needed
+        data21 = data21.withColumn("Loc_extra_tray", f.when(col('Loc_tray') == 0, 1).otherwise(0))
 
-            # If No space to Keep Tray then one additional location needed
-            data21 = data21.withColumn("Loc_extra_tray", f.when(col('Loc_tray') == 0, 1).otherwise(0))
+        # JUST LOOSE SSP's FLAG
+        data21 = data21.withColumn("Loose_ssp_flag", f.when((col('vcp') == 0) & (col('ssp') > 0), 1).otherwise(0))
 
-            # JUST LOOSE SSP's FLAG
-            data21 = data21.withColumn("Loose_ssp_flag", f.when((col('vcp') == 0) & (col('ssp') > 0), 1).otherwise(0))
+        # Total Locations
+        data21 = data21.withColumn("Total_locs", f.when(col('Loose_ssp_flag') == 0,
+                                                        col('Loc_extra') + col('Loc_extra_tray')).otherwise(
+            f.when(col('RatioSSPsinBox') > 0, 1).otherwise(0)))
 
-            # Total Locations
-            data21 = data21.withColumn("Total_locs", f.when(col('Loose_ssp_flag') == 0,
-                                                            col('Loc_extra') + col('Loc_extra_tray')).otherwise(
-                f.when(col('RatioSSPsinBox') > 0, 1).otherwise(0)))
+        # Bring DPCI grain dataframe to distro level dataframe to be able to consume well, also the total_pts locations will
+        # correspond to just one distro,
 
-            # Bring DPCI grain dataframe to distro level dataframe to be able to consume well, also the total_pts locations will
-            # correspond to just one distro,
+        data211 = data21.select('SSZ', 'DPCI', 'Total_locs').toPandas()
 
-            data211 = data21.select('SSZ', 'DPCI', 'Total_locs').toPandas()
+        data_raw11 = data_raw2.loc[(data_raw2['TotalNumberofPallets'] == 0)]
+        data31 = pd.merge(data_raw11, data211, how='left')
 
-            data_raw11 = data_raw2.loc[(data_raw2['TotalNumberofPallets'] == 0)]
-            data31 = pd.merge(data_raw11, data211, how='left')
+        data31['rank'] = data31.groupby(['DPCI'])['Distro'].rank(method='first', ascending=False)
 
-            data31['rank'] = data31.groupby(['DPCI'])['Distro'].rank(method='first', ascending=False)
+        data31.loc[data31['rank'] > 1, ['Total_locs']] = 0
+        # data31.loc[data31['rank'] > 1, ['pallet']] = 0
 
-            data31.loc[data31['rank'] > 1, ['Total_locs']] = 0
-            # data31.loc[data31['rank'] > 1, ['pallet']] = 0
+        #####---------------------------------------------Making Waves from distro-level location calcs (exclude pallets)------------------------####
 
-            #####---------------------------------------------Making Waves from distro-level location calcs (exclude pallets)------------------------####
+        ## User input values of Aisle & SSZ
+        ## Everything SSZ9 goes to A14, all SSZ 2 goes to A13.
 
-            ## User input values of Aisle & SSZ
-            ## Everything SSZ9 goes to A14, all SSZ 2 goes to A13.
+        # user_input_ssz = 13  ## 2,9
+        # user_input_aisle = 2  ## 13,14
 
-            #user_input_ssz = 13  ## 2,9
-            #user_input_aisle = 2  ## 13,14
+        #### Make a choice of using the distro-grain v/s dpci-grain
 
-            #### Make a choice of using the distro-grain v/s dpci-grain
+        if method == 'DPCI' or user_input_ssz == 2:
+            distro_locs = data31
+        else:
+            distro_locs = data222
 
-            if method == 'DPCI':
-                distro_locs = data31
+        ## wave size corresponding to cartons+bins locations
+
+        if levelA == 'Yes' and user_input_udc == 3842 and user_input_aisle >= 2 and user_input_aisle <= 10:
+            Wave_size_ctns = cap * ((aisles.loc[
+                (aisles['Aisle_No'] == user_input_aisle) & (aisles['UDC'] == user_input_udc), 'C+B locations'].tolist()[0]) + 163)  ## 0.9 as a user input...
+
+        elif levelA == 'Yes' and user_input_udc == 3842 and  user_input_aisle >= 11 and user_input_aisle <= 14:
+            Wave_size_ctns = cap * ((aisles.loc[(aisles['Aisle_No'] == user_input_aisle) & (aisles['UDC'] == user_input_udc), 'C+B locations'].tolist()[0]) + 127)
+
+        else:
+            Wave_size_ctns = cap * (aisles.loc[(aisles['Aisle_No'] == user_input_aisle) & (aisles['UDC'] == user_input_udc), 'C+B locations'].tolist()[0])
+
+        ##filter out non-pallet distro's and specifc SSZ
+        df1 = distro_locs.loc[(distro_locs['TotalNumberofPallets'] == 0) & (distro_locs['SSZ'] == user_input_ssz)]
+
+        ##Sort the data by asec wh_aisle, for clubbing nearby wharehosuing locations together in a wave.
+        ## adding sort of allocation date first so as to clear oldest batch in first wave
+        distro_locs = df1.sort_values(by=['AllocationRequestDate', 'Aisle'])
+
+        ## Allocate WaveID's
+
+        distro_locs['Total_locs'] = distro_locs['Total_locs'].fillna(1)
+        distro_locs['wave_cum_locations'] = distro_locs['Total_locs'].cumsum()
+
+        distro_locs['wave_id'] = 'W' + np.ceil(distro_locs['wave_cum_locations'].div(Wave_size_ctns)).astype(int).astype(str)
+        distro_locs['wave_no'] = np.ceil(distro_locs['wave_cum_locations'].div(Wave_size_ctns)).astype(int)
+
+        # the last wave with all cartons
+        max_wave_cartons = distro_locs['wave_no'].max()
+        # wave_cum_locations for last wave
+        last_wave = distro_locs.loc[distro_locs['wave_no'] == max_wave_cartons]
+        last_wave['Cum_locations'] = last_wave['Total_locs'].cumsum()
+        last_wave_size = last_wave['Cum_locations'].max()
+
+        #####------------------------------------------------ Pallet Locations Calc-----------------------------------------############
+
+        Wave_size_pallets = aisles.loc[
+            (aisles['Aisle_No'] == user_input_aisle) & (aisles['UDC'] == user_input_udc), 'Pallet Locations'].tolist()[
+            0]
+        if levelA == 'Yes' and user_input_aisle >= 2 and user_input_aisle <= 10:
+            pract_usable_locs = (aisles.loc[(aisles['Aisle_No'] == user_input_aisle) & (
+                        aisles['UDC'] == user_input_udc), 'Practically Usable Locations'].tolist()[0]) + 163
+
+        elif levelA == 'Yes' and user_input_aisle >= 2 and user_input_aisle <= 10:
+            pract_usable_locs = (aisles.loc[(aisles['Aisle_No'] == user_input_aisle) & (
+                        aisles['UDC'] == user_input_udc), 'Practically Usable Locations'].tolist()[0]) + 127
+
+        else:
+            pract_usable_locs = aisles.loc[(aisles['Aisle_No'] == user_input_aisle) & (
+                        aisles['UDC'] == user_input_udc), 'Practically Usable Locations'].tolist()[0]
+
+        pallet_distro = data_raw2.loc[(data_raw2['TotalNumberofPallets'] > 0) & (data_raw2['SSZ'] == user_input_ssz)]
+
+        pallet_dpci = pallet_distro.groupby('DPCI').agg(
+            pallets=pd.NamedAgg(column="TotalNumberofPallets", aggfunc="sum"),
+            vcp=pd.NamedAgg(column="TotalNumberofFullVCPs", aggfunc="sum"),
+            VCPHt=pd.NamedAgg(column="VCPHeight", aggfunc="mean")).reset_index(level=0)
+
+        # Sort all the dpci by total no. of VCP boxes, pallets with larger no. of boxes should be sent to pallet locations
+        # rather than pallets with smaller quantity of boxes.
+
+        pallet_dpci.sort_values(by=['vcp', 'VCPHt'], ascending=False, inplace=True)
+
+        # one pallet location assumed to hold max of 3 pallets.
+        pallet_dpci["pallet_loc"] = np.ceil(pallet_dpci["pallets"] / 3)
+
+        ## total pallets in each wave
+        pallet_dpci['wave_cum_locations'] = pallet_dpci['pallet_loc'].cumsum()
+
+        ## allocate Wave ID's
+        pallet_dpci['wave_id'] = 'W' + np.ceil(pallet_dpci['wave_cum_locations'].div(Wave_size_pallets)).astype(int).astype(str)
+        pallet_dpci['wave_no'] = np.ceil(pallet_dpci['wave_cum_locations'].div(Wave_size_pallets)).astype(int)
+
+        max_wave_pallets = pallet_dpci['wave_no'].max()
+
+        ##Join back to raw data to get distro_level data
+        pallet_waves = pd.merge(pallet_distro, pallet_dpci, how='left')
+
+        # .drop(['pallets','vcp','VCPHt','pallet_loc','wave_cum_locations'], axis=1)
+
+        pallet_distro = pallet_waves.loc[pallet_waves['wave_no'] <= max_wave_cartons]
+
+        ##################### Make additional pallet waves/general waves based on trailing (remaining) pallets#####################
+
+        plts_rmng = pd.DataFrame(columns=['wave_no'])
+
+        if max_wave_pallets > max_wave_cartons:
+            plts_rmng = pallet_waves.loc[pallet_waves['wave_no'] > max_wave_cartons]
+
+            if plts_rmng['TotalNumberofPallets'].sum() > 50:  ### 50 pallets
+                plts_rmng.loc[:, 'wave_id'] = 'Pallet_wave'
             else:
-                distro_locs = data222
+                ## Assuming if there are lesser pallets then they can be charged to carton locations
+                plts_locs = pd.merge(plts_rmng, data222, how='inner')
+                plts_locs = plts_locs.drop(['pallet_loc', 'wave_cum_locations', 'wave_id', 'wave_no'], axis=1)
+                ##Sort the data by asec wh_aisle, for clubbing nearby wharehosuing locations together in a wave.
+                plts_rmng = plts_locs.sort_values(by=['Aisle'])
+                ## Allocate WaveID's
+                plts_rmng['wave_cum_locations'] = plts_rmng['Total_locs'].cumsum()
 
-            ## wave size corresponding to cartons+bins locations
-
-            if levelA == 'Yes' and user_input_aisle>=2 and user_input_aisle<=10:
-                Wave_size_ctns = 0.9*((aisles.loc[(aisles['Aisle_No'] == user_input_aisle) & (aisles['UDC'] == user_input_udc), 'C+B locations'].tolist()[0])+163)
-
-            elif levelA == 'Yes' and user_input_aisle>=11 and user_input_aisle<=14:
-                Wave_size_ctns = 0.9*((aisles.loc[(aisles['Aisle_No'] == user_input_aisle) & (aisles['UDC'] == user_input_udc), 'C+B locations'].tolist()[0])+127)
-
-            else:
-                Wave_size_ctns = 0.9*(aisles.loc[(aisles['Aisle_No'] == user_input_aisle) & (aisles['UDC'] == user_input_udc), 'C+B locations'].tolist()[0])
-
-            ##filter out non-pallet distro's and specifc SSZ
-            df1 = distro_locs.loc[(distro_locs['TotalNumberofPallets'] == 0) & (distro_locs['SSZ'] == user_input_ssz)]
-
-            ##Sort the data by asec wh_aisle, for clubbing nearby wharehosuing locations together in a wave.
-            distro_locs = df1.sort_values(by=['Aisle'])
-
-            ## Allocate WaveID's
-
-            distro_locs['Total_locs'] = distro_locs['Total_locs'].fillna(1)
-            distro_locs['wave_cum_locations'] = distro_locs['Total_locs'].cumsum()
-            distro_locs['wave_id'] = 'W' + np.ceil(distro_locs['wave_cum_locations'].div(Wave_size_ctns)).astype(int).astype(str)
-            distro_locs['wave_no'] = np.ceil(distro_locs['wave_cum_locations'].div(Wave_size_ctns)).astype(int)
-
-            max_wave_cartons = distro_locs['wave_no'].max()
-
-            #####------------------------------------------------ Pallet Locations Calc-----------------------------------------############
-
-            Wave_size_pallets = aisles.loc[(aisles['Aisle_No'] == user_input_aisle) & (aisles['UDC'] == user_input_udc), 'Pallet Locations'].tolist()[0]
-            if levelA == 'Yes' and user_input_aisle>=2 and user_input_aisle<=10:
-                pract_usable_locs = (aisles.loc[(aisles['Aisle_No'] == user_input_aisle) & (aisles['UDC'] == user_input_udc), 'Practically Usable Locations'].tolist()[0])+163
-
-            elif levelA == 'Yes' and user_input_aisle >= 2 and user_input_aisle <= 10:
-                pract_usable_locs = (aisles.loc[(aisles['Aisle_No'] == user_input_aisle) & (aisles['UDC'] == user_input_udc), 'Practically Usable Locations'].tolist()[0]) +127
-
-            else:
-                pract_usable_locs = aisles.loc[(aisles['Aisle_No'] == user_input_aisle) & (aisles['UDC'] == user_input_udc), 'Practically Usable Locations'].tolist()[0]
-
-            pallet_distro = data_raw2.loc[(data_raw2['TotalNumberofPallets'] > 0) & (data_raw2['SSZ'] == user_input_ssz)]
-
-            pallet_dpci = pallet_distro.groupby('DPCI').agg(
-                pallets=pd.NamedAgg(column="TotalNumberofPallets", aggfunc="sum"),
-                vcp=pd.NamedAgg(column="TotalNumberofFullVCPs", aggfunc="sum"),
-                VCPHt=pd.NamedAgg(column="VCPHeight", aggfunc="mean")).reset_index(level=0)
-
-            # Sort all the dpci by total no. of VCP boxes, pallets with larger no. of boxes should be sent to pallet locations
-            # rather than pallets with smaller quantity of boxes.
-            # in winters add a height constraint too
-
-            pallet_dpci.sort_values(by=['vcp', 'VCPHt'], ascending=False, inplace=True)
-
-            # one pallet location assumed to hold max of 3 pallets.
-            pallet_dpci["pallet_loc"] = np.ceil(pallet_dpci["pallets"] / 3)
-
-            ## total pallets in each wave
-            pallet_dpci['wave_cum_locations'] = pallet_dpci['pallet_loc'].cumsum()
-
-            ## allocate Wave ID's
-            pallet_dpci['wave_id'] = 'W' + np.ceil(pallet_dpci['wave_cum_locations'].div(Wave_size_pallets)).astype(int).astype(str)
-            pallet_dpci['wave_no'] = np.ceil(pallet_dpci['wave_cum_locations'].div(Wave_size_pallets)).astype(int)
-
-            max_wave_pallets = pallet_dpci['wave_no'].max()
-
-            ##Join back to raw data to get distro_level data
-            pallet_waves = pd.merge(pallet_distro, pallet_dpci, how='left')
-
-            # .drop(['pallets','vcp','VCPHt','pallet_loc','wave_cum_locations'], axis=1)
-
-            pallet_distro = pallet_waves.loc[pallet_waves['wave_no'] <= max_wave_cartons]
-
-            ##################### Make additional pallet waves/general waves based on trailing pallets#####################
-
-            plts_rmng = pd.DataFrame(columns=['wave_no'])
-
-            if max_wave_pallets > max_wave_cartons:
-                plts_rmng = pallet_waves.loc[pallet_waves['wave_no'] > max_wave_cartons]
-
-                if plts_rmng['TotalNumberofPallets'].sum() > 100:
-                    plts_rmng.loc[:, 'wave_id'] = 'Pallet_wave'
+                if last_wave_size < 0.8 * (Wave_size_ctns) and user_input_udc == 3840 :  ## if there is space remaining in last wave for pallets to fit in
+                    plts_rmng['wave_id'] = 'W' + str(max_wave_cartons)
                 else:
-                    ## Assuming if there are lesser pallets then they can be charged to carton locations
-                    plts_locs = pd.merge(plts_rmng, data222, how='inner')
-                    plts_locs = plts_locs.drop(['pallet_loc', 'wave_cum_locations', 'wave_id', 'wave_no'], axis=1)
-                    ##Sort the data by asec wh_aisle, for clubbing nearby wharehosuing locations together in a wave.
-                    plts_rmng = plts_locs.sort_values(by=['Aisle'])
-                    ## Allocate WaveID's
-                    plts_rmng['wave_cum_locations'] = plts_rmng['Total_locs'].cumsum()
                     plts_rmng['wave_id'] = 'W_P' + np.ceil(plts_rmng['wave_cum_locations'].div(Wave_size_ctns)).astype(int).astype(str)
 
-            distro_locs = distro_locs.drop(['wave_no', 'wave_cum_locations'], axis=1)
-            pallet_distro = pallet_distro.drop(['wave_no'], axis=1)
-            #plts_rmng = plts_rmng.drop(['wave_no'], axis=1)
+        distro_locs = distro_locs.drop(['wave_no', 'wave_cum_locations'], axis=1)
+        pallet_distro = pallet_distro.drop(['wave_no'], axis=1)
+        # plts_rmng = plts_rmng.drop(['wave_no'], axis=1)
 
-            ### -------------------------------------------------------------------Concat and Summary---------------------------------------####
+        ### -------------------------------------------------------------------Concat and Summary---------------------------------------####
 
-            df = pd.concat([distro_locs, pallet_distro, plts_rmng], ignore_index=True, sort=False)  # plts_rmng
+        df = pd.concat([distro_locs, pallet_distro, plts_rmng], ignore_index=True, sort=False)  # plts_rmng
 
-            summary = df.assign(plt_ssp=df['TotalNumberofFullVCPs'].where(df['TotalNumberofPallets'] > 0)).groupby(
-                by=['wave_id']).agg(
-                ssz=pd.NamedAgg(column="SSZ", aggfunc="mean"),
-                Total_plts=pd.NamedAgg(column="TotalNumberofPallets", aggfunc="sum"),
-                Total_plts_ssps=pd.NamedAgg(column="plt_ssp", aggfunc="sum"),
-                Total_vcp=pd.NamedAgg(column="TotalNumberofFullVCPs", aggfunc="sum"),
-                Total_loose_ssp=pd.NamedAgg(column="TotalNumberofLooseSSP", aggfunc="sum"),
-                Total_ssp=pd.NamedAgg(column="TotalNumberofSSPsintheDistro", aggfunc="sum"),
-                Total_distro=pd.NamedAgg(column="Distro", aggfunc="count"),
-                Total_dpci=pd.NamedAgg(column="DPCI", aggfunc="nunique"),
-                Total_CandB_locs=pd.NamedAgg(column="Total_locs", aggfunc="sum")).reset_index(level=0)
+        ## check how many distro's have height > 15 and allow below mentioned top locations only in each wave.
 
-            summary['Aisle_utilz'] = (summary['Total_CandB_locs'] + Wave_size_pallets) / (pract_usable_locs + 5)
-            summary['Aisle_utilz'] = summary['Aisle_utilz'].astype(float).map("{:.2%}".format)
+        # C (Top) - Level Locations
+        # A2,A4,A6,A8,A10 - 158
+        # A3,A5,A7,A9 - 162
+        # A11- A15 - 126
 
-            summary.sort_values(by=['Aisle_utilz'])
+        Charging_Instructions = []
 
-            data = summary.to_dict('rows')
-            print(type(data))
-            columns = [{"name": i, "id": i, } for i in (summary.columns)]
-            return dash_table.DataTable(data=data, columns=columns),df.to_dict('records')
+        for row in df['VCPHeight']:
+            if row > 15:
+                Charging_Instructions.append('Charge to Top Level')
+            else:
+                Charging_Instructions.append('Level A & B')
 
-            #return html.Div([ dash_table.DataTable(data=summary.to_dict('records'),columns=[{'name': i, 'id': i} for i in summary.columns],page_size=15)])
+        df['Charging Instructions'] = Charging_Instructions
 
 
+        summary = df.assign(plt_ssp=df['TotalNumberofFullVCPs'].where(df['TotalNumberofPallets'] > 0)).groupby(
+            by=['wave_id']).agg(
+            ssz=pd.NamedAgg(column="SSZ", aggfunc="mean"),
+            Total_plts=pd.NamedAgg(column="TotalNumberofPallets", aggfunc="sum"),
+            Total_plts_ssps=pd.NamedAgg(column="plt_ssp", aggfunc="sum"),
+            Total_vcp=pd.NamedAgg(column="TotalNumberofFullVCPs", aggfunc="sum"),
+            Total_loose_ssp=pd.NamedAgg(column="TotalNumberofLooseSSP", aggfunc="sum"),
+            Total_ssp=pd.NamedAgg(column="TotalNumberofSSPsintheDistro", aggfunc="sum"),
+            Total_distro=pd.NamedAgg(column="Distro", aggfunc="count"),
+            Total_dpci=pd.NamedAgg(column="DPCI", aggfunc="nunique"),
+            Total_CandB_locs=pd.NamedAgg(column="Total_locs", aggfunc="sum")).reset_index(level=0)
+
+        summary['Aisle_utilz'] = (summary['Total_CandB_locs'] + Wave_size_pallets) / (pract_usable_locs + 5)
+        summary['Aisle_utilz'] = summary['Aisle_utilz'].astype(float).map("{:.2%}".format)
+
+        summary.sort_values(by=['Aisle_utilz'])
+
+        data = summary.to_dict('rows')
+        print(type(data))
+        columns = [{"name": i, "id": i, } for i in (summary.columns)]
+        return dash_table.DataTable(data=data, columns=columns), df.to_dict('records')
+
+        # return html.Div([ dash_table.DataTable(data=summary.to_dict('records'),columns=[{'name': i, 'id': i} for i in summary.columns],page_size=15)])
 
 
 @app.callback(Output("download-dataframe-csv", "data"),
               Input("btn_csv", "n_clicks"),
               Input('output-data', 'data'))
-
-
-def dwnld_data(n,data):
+def dwnld_data(n, data):
     if n is None:
         return dash.no_update
     else:
         data1 = pd.DataFrame(data)
-        data1=data1.iloc[:, :-5]
-        #print(type(data1))
+
+        data1 = data1.drop(['pallets', 'vcp', 'VCPHt', 'pallet_loc', 'wave_cum_locations', 'wave_no'], axis=1)
+
+        #data1 = data1.iloc[:, :-5]
+        # print(type(data1))
         return dcc.send_data_frame(data1.to_excel, "Distros-WaveID.xlsx", index=False)
+
 
 # ------------------------------------------------------------------------------
 if __name__ == '__main__':
     app.run_server(host="0.0.0.0", debug=False, port=8050)
-    #app.run_server(debug=True)
-    
-#,port=8060
+    # app.run_server(debug=True)
+
+# ,port=8060
